@@ -1,52 +1,99 @@
 import React, { useState} from 'react';
 import styles from './App.module.css';
 import SearchResults from '../SearchResults/SearchResults';
+import Playlist from '../Playlist/Playlist';
 
 function App() {
   const [searchResults, setSearchResults] = useState([
     {
-      name: 'track name 1',
-      artist: 'track artist 1',
-      album: 'track album 1',
+      name: 'Track Name 1',
+      artist: 'Track Artist 1',
+      album: 'Track Album 1',
       id: 1,
     },
     {
-      name: 'track name 2',
-      artist: 'track artist 2',
-      album: 'track album 2',
+      name: 'Track Name 2',
+      artist: 'Track Artist 2',
+      album: 'Track Album 2',
       id: 2,
     },
     {
-      name: 'track name 3',
-      artist: 'track artist 3',
-      album: 'track album 3',
+      name: 'Track Name 3',
+      artist: 'Track Artist 3',
+      album: 'Track Album 3',
       id: 3,
     },
     {
       name: 'Track Name 4',
-      artist: 'track artist 4',
-      album: 'track album 4',
+      artist: 'Track Artist 4',
+      album: 'Track Album 4',
       id: 4,
     },
     {
-      name: 'track name 5',
-      artist: 'track artist 5',
-      album: 'track album 5',
+      name: 'Track Name 5',
+      artist: 'Track Artist 5',
+      album: 'Track Album 5',
       id: 5,
     },
   ]);
+  const [playlistName, setPlaylistName] = useState('Example Playlist Name');
+  const [playlistTracks, setPlaylistTracks] = useState([
+    {
+      name: 'Playlist Track Name 1',
+      artist: 'Playlist Track Artist 1',
+      album: 'Playlist Track Album 1',
+      id: 6,
+    },
+    {
+      name: 'Playlist Track Name 2',
+      artist: 'Playlist Track Artist 2',
+      album: 'Playlist Track Album 2',
+      id: 7,
+    },
+    {
+      name: 'Playlist Track Name 3',
+      artist: 'Playlist Track Artist 3',
+      album: 'Playlist Track Album 3',
+      id: 8,
+    },
+  ]);
 
+  function addTrack(track) {
+    const existingTrack = playlistTracks.find((t) => t.id === track.id);
+    const newTrack = playlistTracks.concat(track);
+    if (existingTrack) {
+      console.log('Track already in playlist');
+    } else {
+      setPlaylistTracks(newTrack);
+    }
+  }
+
+  function removeTrack(track) {
+    const existingTrack = playlistTracks.filter((t) => t.id !== track.id);
+    setPlaylistTracks(existingTrack);
+  }
+
+  function updatePlaylistName(name) {
+    setPlaylistName(name);
+  }
+  
   return (
     <div>
       <h1>
         Ja<span className={styles.highlight}  >mmm</span>ing
       </h1>
       <div className={styles.App}>
-        {/* <-- Add a SearchBar component --> */}
         <div className={styles['App-playlist']}>
-          {/* <-- Add a SearchResults component --> */}
-          <SearchResults userSearchResults={searchResults} />
-          {/* <-- Add a Playlist component --> */}
+          <SearchResults
+            userSearchResults={searchResults}
+            onAdd={addTrack}
+          />
+          <Playlist 
+            playlistName={playlistName} 
+            playlistTracks={playlistTracks}
+            onRemove={removeTrack}
+            onNameChange={updatePlaylistName}
+          />
         </div>
       </div>
     </div>
